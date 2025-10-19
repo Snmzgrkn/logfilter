@@ -17,7 +17,7 @@ jobs:
     steps:
       # 1️⃣ Repo'yu çek
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       # 2️⃣ Python kur
       - name: Set up Python
@@ -38,7 +38,7 @@ jobs:
       # 5️⃣ Çıktı veya artifact kaydet (opsiyonel)
       - name: Upload filtered logs
         if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: filtered-logs
           path: filtered_logs.csv
