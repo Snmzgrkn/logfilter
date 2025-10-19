@@ -1,0 +1,44 @@
+name: Log Filter Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  run-logfilter:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Repo'yu çek
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # 2️⃣ Python kur
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      # 3️⃣ Dependencies yükle
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "No requirements.txt found"; fi
+
+      # 4️⃣ Script çalıştır
+      - name: Run log filter script
+        run: |
+          python main.py
+
+      # 5️⃣ Çıktı veya artifact kaydet (opsiyonel)
+      - name: Upload filtered logs
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: filtered-logs
+          path: filtered_logs.csv
